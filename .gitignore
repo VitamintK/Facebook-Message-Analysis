@@ -48,3 +48,5 @@ Temporary Items
 
 #generated files
 msgs.csv
+#ipython history files
+.ipynb_checkpoints/
