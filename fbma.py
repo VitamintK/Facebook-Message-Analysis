@@ -141,7 +141,7 @@ if __name__ == "__main__":
 	else:
 		print("k")
 
-msgs = pd.DataFrame.read_csv("msgs.csv", encoding = "ISO-8859-1", parse_dates = [4], keep_default_na = False)
+msgs = pd.read_csv("msgs.csv", encoding = "ISO-8859-1", parse_dates = [4], keep_default_na = False)
 
 #def make_words():
 #
