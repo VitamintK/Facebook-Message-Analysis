@@ -2,20 +2,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 f = open("C:\\Users\\kevin\\Downloads\\facebook-vitamintK\\html\\messages.htm", 'r', encoding="UTF8")
 
-if False:
-	from collections import defaultdict
-	words = defaultdict(int)
-
-
-	for line in f:
-		for word in line.split():
-			words[word] += 1
-
-	x = sorted(words.items(), key = lambda x: x[1], reverse = True)
-	for i in x[:350]:
-		print(i)
-#f.read(1000)
-
 """shape of the html page:
 <div class = "thread">
 	person1, person2
@@ -33,7 +19,6 @@ if False:
 #handrolling my own semi-html parser cause fuck
 def make_df():
 	msgs = pd.DataFrame(columns = ["time", "sender", "members", "text"])
-	soups = [] #remove this on dec 25th
 	df_pre_dict = []
 	kkk = None
 	def do_stuff(chunk):
@@ -60,12 +45,6 @@ def make_df():
 			if msg_dict.get("text") and msg_dict.get("sender"):
 				df_pre_dict.append(msg_dict)
 				msg_dict = {"members": members}
-			#print(msg.encode("utf-8"))
-			#time.sleep(1)
-		#raise ValueError
-
-		#soups.append(s)
-		#return s
 	x = f.read(1)
 	in_a_tag = False
 	tags = []
@@ -88,7 +67,6 @@ def make_df():
 				tag+=x
 
 	print("we are now at the start of the threads")
-	#x = f.read(5) #eat the first <div> tag that encapsulates all the threads.  not really necessary to have it I think. ok nevermind it is.
 	x = f.read(1) 
 	while(x):
 		chunk+= x
@@ -100,7 +78,6 @@ def make_df():
 						popped = tags.pop()
 					except:
 						break
-						#true = True
 					if popped.split()[0] == tag.split()[0][1:]:
 						if popped == 'div class="thread"':
 							try:
@@ -110,8 +87,6 @@ def make_df():
 									print(ord(i))
 							do_stuff(chunk)
 							chunk = ""
-						#else:
-							#print(popped, tag)
 						tag = ""
 					else:
 						raise ValueError("END TAG IS TOTALLY DIFFERENT THAN MOST RECENT START TAG {}, {}".format(popped, tag.split()[0]))
@@ -125,7 +100,6 @@ def make_df():
 		elif(x == "<"):
 			assert (not in_a_tag), "rip"
 			in_a_tag = True
-		#print(tag)
 		x = f.read(1)
 
 	msgs = pd.DataFrame(df_pre_dict)
@@ -142,6 +116,3 @@ if __name__ == "__main__":
 		print("k")
 
 msgs = pd.read_csv("msgs.csv", encoding = "ISO-8859-1", parse_dates = [4], keep_default_na = False)
-
-#def make_words():
-#
